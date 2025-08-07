@@ -1,0 +1,191 @@
+## System Implementation and Deployment Report: Agentic AI Learning Coach
+
+This document provides an in-depth description of the system architecture, implementation steps, model configuration, and deployment process for the Agentic AI project, an AI-powered personalized learning coach. This system was designed to assist students in identifying the best course pathway based on their interests, skill levels, and goals. Built using IBM Watsonx and IBM Granite models, the solution fulfills both the practical need for personalization and the technical requirement of utilizing IBM Cloud Lite services.
+
+---
+
+### 1. Introduction to the Project Goal
+
+The Agentic AI system was conceptualized as a solution to address the overwhelming landscape of online learning platforms and courses, where students struggle to find direction aligned with their unique aspirations. The objective was to create an intelligent assistant capable of dynamically constructing and adapting personalized course roadmaps. This assistant, named **Skillith**, was designed to:
+
+* Interact with users via natural language
+* Collect three key inputs: interest area, current skill level, and time/career goal
+* Generate clear, actionable, and motivational learning roadmaps (10–12 weeks)
+* Use Retrieval-Augmented Generation (RAG) to enhance factual accuracy
+* Provide guidance with real-world tools, mini projects, and optional certifications
+
+This solution was implemented using IBM Watsonx Studio, integrated with IBM Granite 7B models and deployed within IBM Cloud Lite infrastructure.
+
+---
+
+### 2. IBM Cloud Setup and Service Provisioning
+
+#### 2.1 Initial Account Setup
+
+The implementation began by logging into the IBM Cloud portal. To avoid conflicts or resource limitations, all existing or unnecessary resources were deleted to free up space under the Lite plan, ensuring a clean slate.
+
+#### 2.2 Creating a Watsonx Studio Project
+
+Using the IBM Cloud console:
+
+* Searched for **Watsonx Studio** in the catalog.
+* Created a **new Watsonx Studio project**, named `Skillith_Project`.
+* During creation, linked it to a newly created instance of **Watsonx Runtime**, which is required for executing and managing AI models.
+
+This project serves as the central workspace for building and training models, integrating data, and managing AI agents.
+
+#### 2.3 Understanding Agentic AI Framework
+
+The Watsonx documentation for **Agentic AI Labs** was consulted to understand the structure and behavior of agent-based AI systems. Key points included:
+
+* How agents process user instructions
+* Integrating retrieval-based knowledge (RAG)
+* Role of system prompts in defining agent personality and behavior
+
+---
+
+### 3. Agent Construction Process
+
+#### 3.1 Creating the AI Agent
+
+Within Watsonx Studio:
+
+* Navigated to the "Build AI Agents" section
+* Created a new agent named `Skillith`
+* Associated it with the active project and runtime instance
+* Enabled data retrieval capabilities
+* Generated an **API Key** for secure access and future deployment
+
+#### 3.2 Defining Agent Behavior (System Prompt)
+
+The agent was given a carefully designed **system prompt** that defined:
+
+* Its role as a learning coach
+* Instructions to collect 3 inputs from users
+* Structured formatting style (week-wise roadmap)
+* Motivational, concise, non-overwhelming tone
+
+Sample system prompt excerpt:
+
+```
+You are a personalized learning coach named Skillith. You help students create a learning roadmap based on their interest area, skill level, and goals. Ask them for these three inputs and return a 10-week roadmap with courses, tools, mini projects, and optional certifications. Format clearly, be encouraging, and keep it realistic for 1–2 hours/day of learning.
+```
+
+This prompt acted as the anchor for agent behavior and ensured response consistency.
+
+#### 3.3 Adding Knowledge Base (RAG)
+
+To enhance factual grounding, a **knowledge file** in `.txt` format was uploaded. This file included sample roadmaps, tool recommendations, and course names. The Watsonx agent was linked to this file as a **RAG database**, enabling it to reference custom knowledge and generate answers based on provided data.
+
+---
+
+### 4. Model Selection and Configuration
+
+The agent allowed experimentation with different models. Several pre-integrated foundation models were available, including:
+
+* Mistral
+* LLaMA
+* IBM Granite
+
+After testing, the **IBM Granite 7B** model was selected due to its performance in:
+
+* Understanding user intent clearly
+* Returning consistently structured roadmaps
+* Minimal hallucination when referencing the RAG file
+
+#### Final Configuration Parameters:
+
+* Model: Granite-7B
+* Max Tokens: 2000 (to allow long-format outputs)
+* Temperature: Default (balanced creativity)
+* Frequency Penalty: Default (avoid repetition)
+
+This configuration gave optimal results for multi-turn interactions, including user follow-ups like:
+
+* "What should I do after Week 3?"
+* "I now want to switch from UI/UX to Cybersecurity."
+
+---
+
+### 5. Testing and Iteration
+
+The model was rigorously tested using different user inputs. Examples included:
+
+* "I'm a beginner in Frontend Development. Want to be job-ready in 3 months."
+* "I'm already good at Python, want to get into AI/ML. What's the path?"
+
+The agent responded with:
+
+* Structured week-by-week learning plans
+* Mini projects like building a portfolio, creating a login system, or training a simple ML model
+* Realistic time breakdown
+* Tools like Figma, VS Code, Google Colab, etc.
+* Optional certifications from platforms like Coursera or freeCodeCamp
+
+Corrections were made to:
+
+* Improve grammar and formatting
+* Add fallback messages for incomplete user inputs
+* Refine outputs for advanced users
+
+---
+
+### 6. Deployment
+
+After final testing, the agent was deployed directly from Watsonx Studio.
+
+#### 6.1 Deployment Space:
+
+* Named: `Agentic_AI_01`
+* Type: Watsonx Agent Deployment
+* Linked Runtime: Granite 7B with prompt configuration
+
+#### 6.2 Post-deployment Testing:
+
+* Returned to the agent UI and tried multiple inputs.
+* Verified that the deployed version retained system prompt behavior.
+* Ensured RAG was active and referenced the correct file.
+
+The agent was fully functional and could be extended via API or integrated into web frontends.
+
+---
+
+### 7. Planned Future Enhancements
+
+Due to time constraints, the frontend was not developed. However, the following upgrades are scoped:
+
+1. **Frontend UI**
+
+   * Built using React or Vue
+   * Chat-like interface with form inputs for interest, skill level, and time goal
+
+2. **Backend Server**
+
+   * Flask or Node.js API to handle frontend requests
+   * Connect to Watsonx Agent using API key
+   * IBM Cloud Functions for scalable triggers
+
+3. **Database Integration**
+
+   * MongoDB or IBM Cloudant to store user progress
+   * Allow follow-up conversations and roadmap tracking
+
+4. **Adaptive Roadmaps**
+
+   * Dynamically update plans based on progress
+   * Recommend alternate tracks or micro-courses
+
+5. **User Authentication (Optional)**
+
+   * Enable login and save feature
+   * Offer personalized dashboard
+
+---
+
+### 8. Conclusion
+
+The Agentic AI Learning Coach project successfully demonstrates the power of IBM Watsonx and Granite models in solving a real-world challenge—personalized education guidance. Built and deployed entirely on IBM Cloud Lite, the project fulfills all technical requirements and presents a scalable foundation for further development into a full SaaS platform.
+
+It bridges gaps in traditional learning platforms by enabling human-like conversations, real-time adaptability, and intelligent recommendations. With planned frontend development and integration features, this agent has the potential to become an everyday assistant for students across domains.
+
+Deployment was done cleanly and modularly, and can be updated with new RAG files, improved prompts, or connected frontends at any time without requiring complete reengineering.
